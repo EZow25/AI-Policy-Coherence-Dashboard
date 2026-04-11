@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Policy Coherence</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <header>
+        <p>AI Policy Coherence: Southeast Asia</p>
+    </header>
+    <body>
+        <div class="filters">
+            <fieldset id="p-filters">
+                <legend>Filter by Principle</legend>
+                <div class="option">
+                    <input type="checkbox" id="overall" name="overall" value="Overall" checked>
+                    <label for="overall">
+                        All
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="p1" name="p1" value="P1" checked>
+                    <label for="p1">
+                        <img src="assets/transparency.svg" width="14"/>Transparency & Explainability
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="p2" name="p2" value="P2" checked>
+                    <label for="p2">
+                        <img src="assets/fairness.svg" width="14"/>Fairness & Equity
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="p3" name="p3" value="P3" checked>
+                    <label for="p3">
+                        <img src="assets/security.svg" width="14"/>Security & Safety
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="p4" name="p4" value="P4" checked>
+                    <label for="p4">
+                        <img src="assets/human.svg" width="14"/>Human-centricity
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="p5" name="p5" value="P5" checked>
+                    <label for="p5">
+                        <img src="assets/privacy.svg" width="14"/>Privacy & Data Governance
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="p6" name="p6" value="P6" checked>
+                    <label for="p6">
+                        <img src="assets/accountability.svg" width="14"/>Accountability & Integrity
+                    </label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="p7" name="p7" value="P7" checked>
+                    <label for="p7">
+                        <img src="assets/robustness.svg" width="14"/>Robustness & Reliability
+                    </label>
+                </div>
+            </fieldset>
+        </div>
+        <div class="vizs">
+            <div id="map-container" class="viz-container">
+
+            </div>
+
+            <div id="matrix-container" class="viz-container-wide">
+
+            </div>
+        </div>
+    </body>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script src="script.js"></script>
+    
+</html>

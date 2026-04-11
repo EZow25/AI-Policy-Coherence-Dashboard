@@ -1,0 +1,147 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 2em;
+    width: 100%;
+    /* https://www.w3schools.com/css/css3_gradients.asp */
+    background-image: linear-gradient(to right, #004478, #007EDE); 
+    color: white;
+    font-size: 24pt;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+header > p {
+    margin: 0 0 0 24px;
+}
+
+.vizs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.viz-container {
+    background-color: #ffffff;
+    width: 600px;
+    height: 600px;
+    padding: 12px;
+    margin: 12px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.viz-container-wide {
+    background-color: #ffffff;
+    width: 800px;
+    height: 600px;
+    padding: 12px;
+    margin: 12px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.axis {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tooltip {
+    position: fixed;
+    pointer-events: none;
+    padding: 8px 12px;
+    background: #ffffff;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    font-size: 9pt;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.legendTitle {
+	font-size: 12pt;
+	fill: #4F4F4F;
+	font-weight: 12;
+}
+
+.axis path, .axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.axis text {
+ 	fill: #000;
+	font-size: 12pt;
+}
+
+hr {
+    width: 98%;
+    color: rgb(172, 172, 172);
+}
+
+.filters {
+    background-color: #ffffff;
+    width: 98.5%;
+    height: 80px;
+    margin-bottom: 8px;
+    padding: 12px;
+}
+
+.option {
+    height: 52px;
+    font-size: 9pt;
+}
+
+fieldset > legend {
+    margin-bottom: 16px;
+}
+
+.option > input {
+    margin-right: 8px;
+}
+
+.option > label > img {
+    margin-right: 4px;
+}
+
+fieldset {
+    border: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 4px;
+}
