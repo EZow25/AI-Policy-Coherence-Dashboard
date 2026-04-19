@@ -1,6 +1,3 @@
-// Due to having to take a couple weeks for user evaluations, I've only had time to develop the map page. 
-// I feel that, including the work needed to do the eval sessions, analyze the data, and come up with solutions to problems identified from them, 
-// I have achieved at least 60% of progress as specified in the assignment description, especially compared to teams who didn't do user evaluations.
 // https://d3-graph-gallery.com/graph/backgroundmap_basic.html
 
 const map_m = { top: 20, right: 20, bottom: 20, left: 20 };
@@ -83,7 +80,7 @@ const tooltip = d3.select("body")
 
 const projection = d3.geoNaturalEarth1()
     
-const matrix_m = { top: 0, right: 0, bottom: 40, left: 80 };
+const matrix_m = { top: 0, right: 0, bottom: 40, left: 100 };
 const matrix_outerWidth = 800;
 const matrix_outerHeight = 600;
 
@@ -96,7 +93,7 @@ const matrix_svg = d3.select("#matrix-container")
     .attr("viewBox", `0 0 ${matrix_outerWidth} ${matrix_outerHeight}`);
 
 const se_asia = ["Myanmar", "Thailand", "Laos", "Vietnam", "Cambodia", "Malaysia", "Brunei", "Singapore", "Philippines", "Indonesia", "Timor-Leste"];
-const principles = {"p1": "Transparency & Explainability", "p2": "Fairness & Equity", "p3": "Security & Safety", "p4": "Human-centricity", "p5": "Privacy & Data Governance", "p6": "Accountability & Integrity", "p7": "Robustness & Reliability"};
+const principles_labels = {"p1": "Transparency & Explainability", "p2": "Fairness & Equity", "p3": "Security & Safety", "p4": "Human-centricity", "p5": "Privacy & Data Governance", "p6": "Accountability & Integrity", "p7": "Robustness & Reliability"};
 
 function moveTooltip(event) {
     const pad = 12;
@@ -124,7 +121,7 @@ function hideTooltip() {
 d3.csv("data/scores.csv").then(raw => {
     let scores = d3.group(raw, d => d.Principle);
     let filters = ["overall", "p1", "p2", "p3", "p4", "p5", "p6", "p7"];
-    console.log(scores);
+    
     function update_scores(event) {
         const clicked = event.currentTarget;
         if (clicked.name === "overall") {
@@ -146,19 +143,30 @@ d3.csv("data/scores.csv").then(raw => {
         }
         filters = p_filters
         scores = d3.group(raw.filter(d => filters.includes(d.Principle)), d => d.Principle);
-        console.log(scores)
+        
         render();
     }
     let renderMatrix = () => {};
+    let update_matrix = () => {};
 
     let countryPaths;
     d3.json("data/countries.geojson").then(data => {
+        
+        const zoom = d3.zoom()
+            .scaleExtent([1, 8])
+            .translateExtent([[0, 0], [map_width, map_height]])
+            .on('zoom', zoomed);
+
+        map_svg.call(zoom);
+
         projection.fitExtent(
             [[map_m.left, map_m.top], [map_outerWidth - map_m.right, map_outerHeight - map_m.bottom]],
             { type: "FeatureCollection", features: data.features }
         );
 
-        countryPaths = map_svg.append("g")
+        const map_g = map_svg.append("g")
+
+        countryPaths = map_g
             .selectAll("path")
             .data(data.features)
             .enter()
@@ -169,27 +177,32 @@ d3.csv("data/scores.csv").then(raw => {
                 .style("stroke", "#000000")
                 .style("stroke-width", 1);
 
-        countryPaths.on("mouseover", (event, d) => {
-            d3.select(event.currentTarget)
-                .transition().duration(200)
-                .style("stroke-width", 3);
-            showTooltip(event, d);
-        }).on("mouseout", (event) => {
+        countryPaths.on("mouseout", (event) => {
             d3.select(event.currentTarget)
                 .transition().duration(200)
                 .style("stroke-width", 1);
             hideTooltip();
+            update_matrix(null);
         }).on("mousemove", (event) => {
             moveTooltip(event);
+        }).on("click", (event, d) => {
+            const name = d.properties.name;
+            window.location.href = `country.html?name=${encodeURIComponent(name)}`;
         });
 
         render();
+        
+        function zoomed(event) {
+        map_g
+            .selectAll('path') // To prevent stroke width from scaling
+            .attr('transform', event.transform);
+        }
     });
-
+    let countries_overall;
     function render() {
         if (!countryPaths) return;
 
-        const countries_overall = new Map(se_asia.map(country => {
+        countries_overall = new Map(se_asia.map(country => {
             let val;
             if (filters.includes("overall") && filters.length === 8) {
                 val = +scores.get("overall")[0][country];
@@ -207,29 +220,6 @@ d3.csv("data/scores.csv").then(raw => {
             .transition().duration(500).ease(d3.easeCubicInOut)
             .attr("fill", d => color(countries_overall.get(d.properties.name) ?? 0));
 
-        // Update tooltip handler with latest data
-        countryPaths.on("mouseover", (event, d) => {
-            d3.select(event.currentTarget)
-                .transition().duration(200)
-                .style("stroke-width", 3);
-            showTooltip(event, d, countries_overall);
-        });
-
-        renderMatrix();
-
-        function showTooltip(event, d, countries_overall) {
-            let html = `<div>Coherence: ${countries_overall.get(d.properties.name)}%</div><hr>`;
-            filters.forEach(f => {
-                if (f === "overall") return;
-                const rows = scores.get(f);
-                if (!rows) return;
-                html += `<div>${principles[f]}: ${rows[0][d.properties.name]}%</div>`;
-            });
-            tooltip
-                .html(`<b>${d.properties.name}</b>` + html)
-                .classed("visible", true);
-            moveTooltip(event);
-        }
     }
 
     d3.selectAll("input[type='checkbox']").on("click", update_scores);
@@ -242,14 +232,14 @@ d3.csv("data/scores.csv").then(raw => {
         const cleaned = raw.filter(d => p_nums.includes(+d.Principle.slice(1)));
 
         const points = cleaned.flatMap(d => se_asia.map(country => ({
-            principle: principles[d.Principle],
+            principle: principles_labels[d.Principle],
             principleKey: d.Principle,          // ← keep the key for filter lookups
             country,
             val: +d[country]
         })));
 
         const x = d3.scaleBand()
-            .domain(Object.values(principles))
+            .domain(Object.values(principles_labels))
             .range([matrix_m.left, matrix_outerWidth - matrix_m.right])
             .padding(0.1);
 
@@ -281,7 +271,7 @@ d3.csv("data/scores.csv").then(raw => {
 
         // Icons & axes — built once, never change
         matrix_svg.selectAll(".x-icon")
-            .data(Object.values(principles))
+            .data(Object.values(principles_labels))
             .enter()
             .append("image")
             .attr("class", "x-icon")
@@ -294,11 +284,15 @@ d3.csv("data/scores.csv").then(raw => {
                 .text(d => d);
 
         matrix_svg.append("g")
+            .attr("id", "matrix-y")
             .attr("transform", `translate(${matrix_m.left}, 0)`)
             .call(d3.axisLeft(y).tickSize(0))
             .call(axis => axis.select(".domain").remove());
 
-        const cell_width = (x.range()[1] - x.range()[0]) / Object.values(principles).length;
+        matrix_svg.selectAll("#matrix-y text")
+            .style("font-size", "12pt");
+
+        const cell_width = (x.range()[1] - x.range()[0]) / Object.values(principles_labels).length;
         const cell_height = (y.range()[1] - y.range()[0]) / se_asia.length;
 
         const cell = matrix_svg.selectAll(".cell")
@@ -337,11 +331,54 @@ d3.csv("data/scores.csv").then(raw => {
             matrix_svg.selectAll(".x-icon")
                 .transition().duration(500).ease(d3.easeCubicInOut)
                 .attr("opacity", d => {
-                    const key = Object.keys(principles).find(k => principles[k] === d);
+                    const key = Object.keys(principles_labels).find(k => principles_labels[k] === d);
                     return activePrinciples.has(key) ? 1 : 0.15;
                 });
         };
 
         renderMatrix();
+
+        // Update tooltip handler with latest data
+        countryPaths.on("mouseover", (event, d) => {
+            d3.select(event.currentTarget)
+                .transition().duration(200)
+                .style("stroke-width", 3);
+            showTooltip(event, d);
+        });
+
+        renderMatrix();
+
+        function showTooltip(event, d) {
+            let html = `<div>Coherence: ${countries_overall.get(d.properties.name)}%</div><hr>`;
+            filters.forEach(f => {
+                if (f === "overall") return;
+                const rows = scores.get(f);
+                if (!rows) return;
+                html += `<div>${principles_labels[f]}: ${rows[0][d.properties.name]}%</div>`;
+            });
+            tooltip
+                .html(`<b>${d.properties.name}</b>` + html)
+                .classed("visible", true);
+            moveTooltip(event);
+
+            update_matrix(d.properties.name)
+        }
+
+        update_matrix = (country) => {
+            const activePrinciples = new Set(filters.filter(f => f !== "overall"));
+
+            cell.selectAll("circle").transition().duration(100)
+                .attr("stroke", d =>
+                    d.country === country && activePrinciples.has(d.principleKey) ? "#1d1d1d" : "#000"
+                )
+                .attr("stroke-width", d => {
+                    console.log(d.country === country && filters.includes(d.principleKey))
+
+                    return d.country === country && activePrinciples.has(d.principleKey) ? 3 : 0.5;
+                });
+
+            matrix_svg.selectAll("#matrix-y .tick text")
+                .style("font-weight", d => d === country ? 600 : 400);
+        };
     });
 });
