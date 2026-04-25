@@ -4,82 +4,66 @@
   <meta charset="UTF-8" />
   <title>AI Policy Coherence</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .country-page {
-      max-width: 680px;
-      margin: 32px auto;
-      background: #fff;
-      border-radius: 8px;
-      padding: 32px 40px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 24px;
-      color: #004478;
-      text-decoration: none;
-      font-size: 10pt;
-    }
-    .back-link:hover { text-decoration: underline; }
-    h1 { margin: 0 0 4px; }
-    .overall-score {
-      font-size: 48pt;
-      font-weight: 700;
-      color: #004478;
-      line-height: 1;
-    }
-    .overall-label {
-      font-size: 10pt;
-      color: #888;
-      margin-bottom: 32px;
-    }
-    .principle-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .principle-icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-    .principle-label { flex: 1; font-size: 10pt; }
-    .bar-track {
-      flex: 2;
-      height: 10px;
-      background: #e8e8e8;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%;
-      border-radius: 5px;
-      background: linear-gradient(to right, #c6dbef, #08306B);
-    }
-    .principle-pct {
-      width: 36px;
-      text-align: right;
-      font-size: 10pt;
-      font-weight: 600;
-      color: #004478;
-    }
-    .not-found {
-      text-align: center;
-      margin-top: 80px;
-      color: #888;
-    }
-  </style>
 </head>
 <header>
   <p>AI Policy Coherence: Southeast Asia</p>
 </header>
 <body>
-  <div class="country-page">
-    <a class="back-link" href="index.html">← Back to Dashboard</a>
+  <div id="context">
+    <div class="banner">
+        <h2>What is AI Policy Coherence?</h2>
+        <p>AI Policy Coherence measures how closely national AI policies align with shared regional AI governance principles.</p>
+    </div>
+    <div class="info-box">
+        <h2 class="info-box-toggle">
+            What are the AI Governance Principles?
+            <span class="info-box-arrow">▾</span>
+        </h2>
+        <div class="info-box-body">
+            <p>
+                Southeast Asia's <a href="https://asean.org/book/asean-guide-on-ai-governance-and-ethics/" target="_blank">ASEAN Guide on AI Governance and Ethics</a> 
+                breaks down AI governance into 7 principles, each with their own sub-principles.
+            </p>
+            <div id="principles-descriptions">
+                <div class="principle-box">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="info-box">
+        <h2 class="info-box-toggle">
+            How is AI Policy Coherence Quantified?
+            <span class="info-box-arrow">▾</span>
+        </h2>
+        <div class="info-box-body">
+            <p>
+                We follow a structured scoring framework based on the Southeast Asia's 
+                <a href="https://asean.org/book/asean-guide-on-ai-governance-and-ethics/" target="_blank">ASEAN Guide on AI Governance and Ethics</a>.<br>
+                To generate an overall coherence score for each country, we use a bottom-up approach starting with sub-principles and the country's AI policies. 
+                We first aim to assign a score from 0 to 3 for each sub-principle based on how strongly the country's policies adhere to those sub-principles. 
+                Afterward, sub-principles belonging to the same principle are used to generate a coherence score for that principle.
+                Those principle scores are finally averaged to generate the country's overall coherence score.
+            </p>
+        </div>
+    </div>
+    <div class="context-box">
+        <h3>This dashboard seeks to visualize:</h3>
+        <img src="assets/goals.svg" alt="Overall coherence, strength across principles, regional convergence patterns" id="goals-img"/>
+    </div>
+  </div>
+  <div class="banner">
+    <h2>AI Policy Coherence Dashboard: Southeast Asia</h2>
+  </div>
+  <div id="country-page">
+    <a id="back-link" href="index.html#dashboard">← Back to Dashboard</a>
     <div id="content">Loading…</div>
+  </div>
+  <div id="policies">
+    <h3>Policies</h3>
   </div>
 </body>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="country.js"></script>
+<script src="load_descriptions.js"></script>
 </html>
