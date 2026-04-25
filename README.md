@@ -12,10 +12,10 @@ The dashboard visualizes quantitative data representing how strongly Southeast A
 │  ├─ scores.csv - stores principle and subprinciples scores for each country
 ├─ .gitattributes
 ├─ README.md
-├─ country.html - HTML template for each country\'s page
+├─ country.html - HTML template for each country's page
 ├─ country.js - Fills country.html with the selected country's information
 ├─ index.html - Landing page
-├─ load_descriptions.js - Updates the \"What are the AI Governance Principles?\" dropdowns
+├─ load_descriptions.js - Updates the "What are the AI Governance Principles?" dropdowns
 ├─ script.js - Builds the heatmap, matrix, and parallel coordinate plot in the dashboard
 ├─ style.css
 ```
