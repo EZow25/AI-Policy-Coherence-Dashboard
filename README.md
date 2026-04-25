@@ -2,7 +2,7 @@
 The dashboard visualizes quantitative data representing how strongly Southeast Asian countries adhere to regional AI governance principles, outlined by the ASEAN Guide on AI Governance and Ethics (https://asean.org/book/asean-guide-on-ai-governance-and-ethics/)
 
 ## Project Structure
-```ini
+```text
 .
 ├─ assets - stores image files, mainly principle icons
 ├─ data
