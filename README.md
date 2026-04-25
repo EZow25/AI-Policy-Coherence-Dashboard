@@ -2,6 +2,8 @@
 The dashboard visualizes quantitative data representing how strongly Southeast Asian countries adhere to regional AI governance principles, outlined by the ASEAN Guide on AI Governance and Ethics (https://asean.org/book/asean-guide-on-ai-governance-and-ethics/)
 
 ## Project Structure
+```ini
+.
 ├─ assets - stores image files, mainly principle icons
 ├─ data
 │  ├─ countries.geojson - geographic data to build the map
@@ -16,3 +18,4 @@ The dashboard visualizes quantitative data representing how strongly Southeast A
 ├─ load_descriptions.js - Updates the "What are the AI Governance Principles?" dropdowns
 ├─ script.js - Builds the heatmap, matrix, and parallel coordinate plot in the dashboard
 ├─ style.css
+```
