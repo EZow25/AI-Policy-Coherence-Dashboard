@@ -242,10 +242,20 @@ d3.csv("data/scores.csv").then(raw => {
         // ── Zoom behaviour ────────────────────────────────────────────
         const zoom = d3.zoom()
             .scaleExtent([1, 8])
-            .translateExtent([[0, 0], [map_width, map_height]])
             .on("zoom", zoomed);
 
         map_svg.call(zoom);
+
+        // Zoom button handlers — each click transitions smoothly by a factor of 1.5×
+        const zoomStep = 1.5;
+
+        d3.select("#zoom-in").on("click", () => {
+            map_svg.transition().duration(350).call(zoom.scaleBy, zoomStep);
+        });
+
+        d3.select("#zoom-out").on("click", () => {
+            map_svg.transition().duration(350).call(zoom.scaleBy, 1 / zoomStep);
+        });
 
         // Fit the projection so all country paths fill the container
         projection.fitExtent(
@@ -289,7 +299,22 @@ d3.csv("data/scores.csv").then(raw => {
 
         // Zoom handler: transform the path group without scaling stroke widths
         function zoomed(event) {
-            map_g.selectAll("path").attr("transform", event.transform);
+            const t = event.transform;
+
+            // At minimum zoom, snap back to original position
+            if (t.k <= 1) {
+                map_g.selectAll("path").attr("transform", null);
+                return;
+            }
+
+            // Clamp translation so the map can never be panned out of view.
+            // At scale k, the map is k× larger, so the max offset in each
+            // direction is (containerSize * (k - 1)) before it goes offscreen.
+            const tx = Math.min(0, Math.max(t.x, map_outerWidth  * (1 - t.k)));
+            const ty = Math.min(0, Math.max(t.y, map_outerHeight * (1 - t.k)));
+
+            map_g.selectAll("path")
+                .attr("transform", `translate(${tx}, ${ty}) scale(${t.k})`);
         }
     });
 

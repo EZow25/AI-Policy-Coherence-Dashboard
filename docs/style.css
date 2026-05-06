@@ -74,6 +74,38 @@ header > p {
     align-items: center;
 }
 
+#map-container {
+    height: 48vh;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.map-zoom-btn {
+    position: absolute;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 18pt;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.15s ease;
+}
+
+.map-zoom-btn:hover {
+    background: #f0f4f8;
+}
+
+#zoom-in  { bottom: 52px; }
+#zoom-out { bottom: 12px; }
+
 /* ── Parallel Coordinate Plot container ─────────────────────────── */
 .viz-container-full {
     background-color: #ffffff;
