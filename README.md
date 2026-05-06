@@ -1,6 +1,8 @@
 # AI-Policy-Coherence-Dashboard
 The dashboard visualizes quantitative data representing how strongly Southeast Asian countries adhere to regional AI governance principles, outlined by the ASEAN Guide on AI Governance and Ethics (https://asean.org/book/asean-guide-on-ai-governance-and-ethics/)
 
+Access it via https://ezow25.github.io/AI-Policy-Coherence-Dashboard/
+
 ## Project Structure
 ```text
 .
